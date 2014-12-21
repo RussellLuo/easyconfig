@@ -36,10 +36,13 @@ class ConfigTest(unittest.TestCase):
 
     def test_load_from_envvar(self):
         config = Config(datasrc=os.environ)
-        self.assertTrue('DEBUG' not in config)
+        self.assertTrue('SECRET_KEY' not in config)
 
         os.environ.setdefault('SECRET_KEY', '123***456')
         self.assertEqual(config.SECRET_KEY, '123***456')
+
+        os.environ['SECRET_KEY'] = 'xxx***yyy'
+        self.assertEqual(config.SECRET_KEY, 'xxx***yyy')
 
 
 if __name__ == '__main__':
