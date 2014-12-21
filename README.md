@@ -1,4 +1,4 @@
-easyconfig
+EasyConfig
 ==========
 
-A simple library for easy configuration in Python, inspired by `flask.config`.
+A simple library for loading configurations easily in Python, inspired by `flask.config`.
