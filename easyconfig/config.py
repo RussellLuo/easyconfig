@@ -9,19 +9,19 @@ class Config(DictProxy, dict):
 
     Example usage:
 
-        # load configurations from defaults (a dict)
+        # load configurations from a dict (as default)
         config = Config({'DEBUG': True})
         assert config['DEBUG'] == True
         assert config.DEBUG == True
 
-        # load configurations from a dict
+        # load/update configurations from a dict
         config.from_mapping({'PORT': 5000})
 
-        # load configurations from an object
+        # load/update configurations from an object
         from yourapplication import default_config
         config.from_object(default_config)
 
-        # load configurations from the string environment
+        # load configurations from environment variables
         import os
         config = Config(datasrc=os.environ)
         assert 'DEBUG' not in config
