@@ -4,6 +4,20 @@ EasyConfig
 A simple library for loading configurations easily in Python, inspired by `flask.config`.
 
 
+Installation
+------------
+
+Install `EasyConfig` with `pip`:
+
+    $ pip install python-easyconfig
+
+Install development version from `GitHub`:
+
+    $ git clone https://github.com/RussellLuo/easyconfig.git
+    $ cd easyconfig
+    $ python setup.py install
+
+
 Getting Started
 ---------------
 

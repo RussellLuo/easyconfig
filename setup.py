@@ -10,10 +10,13 @@ install_requires = [
 ],
 
 setup(
-    name='EasyConfig',
+    name='Python-EasyConfig',
     version='0.0.1',
     author='RussellLuo',
     author_email='luopeng.he@gmail.com',
+    maintainer='RussellLuo',
+    maintainer_email='luopeng.he@gmail.com',
+    keywords='Configuration, Python',
     description=description,
     license='MIT',
     long_description=description,
