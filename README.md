@@ -54,7 +54,7 @@ Getting Started
     import os
     from easyconfig import Config, str_object
     config = Config()
-    config.from_object(str_object('default_config'))
+    config.from_object(str_object('configs.default_config'))
     assert config.SECRET_KEY == '123***456'
 
 ### 6. load/update configurations from an environment variable pointing to an object
@@ -62,6 +62,20 @@ Getting Started
     import os
     from easyconfig import Config, envvar_object
     config = Config()
-    os.environ.setdefault('EASY_CONFIG', 'default_config')
+    os.environ.setdefault('EASY_CONFIG', 'configs.default_config')
     config.from_object(envvar_object('EASY_CONFIG'))
+    assert config.SECRET_KEY == '123***456'
+
+### 7. load/update configurations from a JSON file
+
+    from easyconfig import Config, json_mapping
+    config = Config()
+    config.from_mapping(json_mapping('/data/configs/default_config.json'))
+    assert config.SECRET_KEY == '123***456'
+
+### 8. load/update configurations from a YAML file
+
+    from easyconfig import Config, yaml_mapping
+    config = Config()
+    config.from_mapping(yaml_mapping('/data/configs/default_config.yml'))
     assert config.SECRET_KEY == '123***456'
