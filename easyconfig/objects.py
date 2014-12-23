@@ -7,12 +7,12 @@ from werkzeug.utils import import_string
 
 
 def str_object(obj_name):
-    """Get configuration object from string."""
+    """Get a configuration object from a string."""
     return import_string(obj_name)
 
 
 def envvar_object(var_name, silent=False):
-    """Configuration object from an environment variable."""
+    """Get a configuration object from an environment variable."""
     obj_name = os.environ.get(var_name)
     if not obj_name and not silent:
         raise RuntimeError(
