@@ -17,9 +17,11 @@ def load_from_file(load_func, filename, silent=False):
                 )
     except IOError as e:
         if not silent:
-            e.strerror = ('Unable to load configuration '
-                          'file %r (%s)') % (filename, e.strerror)
+            e.strerror = 'Unable to load configuration file (%s)' % e.strerror
             raise
+        else:
+            obj = {}
+
     return obj
 
 
