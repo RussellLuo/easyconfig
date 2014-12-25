@@ -34,6 +34,12 @@ class ConfigTest(unittest.TestCase):
         config.from_object(app_config)
         self.assertEqual(config.SECRET_KEY, '123***456')
 
+    def test_load_from_none_object(self):
+        config = Config()
+        config.from_object(None)
+        uppercase_attrs = filter(lambda attr: attr.isupper(), dir(config))
+        self.assertFalse(uppercase_attrs)
+
     def test_load_from_envvar(self):
         config = Config(datasrc=os.environ)
         self.assertTrue('SECRET_KEY' not in config)
@@ -43,6 +49,10 @@ class ConfigTest(unittest.TestCase):
 
         os.environ['SECRET_KEY'] = 'xxx***yyy'
         self.assertEqual(config.SECRET_KEY, 'xxx***yyy')
+
+    def test_load_from_empty_envvar(self):
+        config = Config(datasrc=os.environ)
+        self.assertFalse(hasattr(config, 'NULL_KEY'))
 
 
 if __name__ == '__main__':

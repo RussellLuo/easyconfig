@@ -19,6 +19,18 @@ class MappingsTest(unittest.TestCase):
         self.assertEqual(config.PORT, 5000)
         self.assertEqual(config.SECRET_KEY, '123***456')
 
+    def test_nonexistent_json_mapping(self):
+        self.assertRaisesRegexp(
+            IOError,
+            "\[Errno 2\] Unable to load configuration file "
+            "\(No such file or directory\): 'no_json_file'",
+            json_mapping, 'no_json_file'
+        )
+
+    def test_nonexistent_json_mapping_in_silent(self):
+        mapping = json_mapping('no_json_file', True)
+        self.assertFalse(mapping)
+
     def test_yaml_mapping(self):
         config = Config()
         yaml_filename = os.path.join(cur_path, 'configs/default_config.yml')
