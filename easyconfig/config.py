@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .dictproxy import DictProxy
 
-
-class Config(DictProxy, dict):
+class Config(dict):
     """The core configuration class.
 
     Example usage:
@@ -32,29 +30,25 @@ class Config(DictProxy, dict):
     """
 
     def __init__(self, defaults=None, datasrc=None):
-        # `self._datasrc` must be set before `DictProxy.__init__` is called
-        # reason:
-        #     1. `DictProxy.__init__` will set `self._inner_dict`
-        #     2. then, every set behaviour will trigger `self.__contains__`
-        #     3. then, `self._datasrc` will be accessed
-        #     4. if `self._datasrc` is not set yet, then go to `self.__getattr__`
-        #     5. then, `self.__contains__` is triggered again
-        #     6. an infinite recursive loop occurs...
         self._datasrc = datasrc or {}
-        DictProxy.__init__(self, self)
-
         self.from_mapping(defaults or {})
 
-    def __contains__(self, item):
+    def __getitem__(self, key):
         """Override to take `self._datasrc` into account."""
-        exists = dict.__contains__(self, item)
-        if not exists:
-            exists = item in self._datasrc
-        return exists
+        if key in self:
+            return dict.__getitem__(self, key)
+        else:
+            return object.__getattribute__(self, '_datasrc')[key]
 
-    def __missing__(self, key):
-        """Override to try to get `key` from `self._datasrc`."""
-        return self._datasrc[key]
+    def __setitem__(self, key, value):
+        """Override to only allow uppercase `key` to be set."""
+        if key.isupper():
+            dict.__setitem__(self, key, value)
+        object.__setattr__(self, key, value)
+
+    # make accessing dict keys like attributes possible
+    __getattr__ = __getitem__
+    __setattr__ = __setitem__
 
     def from_mapping(self, mapping):
         for key, value in mapping.iteritems():
