@@ -12,7 +12,7 @@ install_requires = [
 
 setup(
     name='Python-EasyConfig',
-    version='0.0.2',
+    version='0.1.0',
     author='RussellLuo',
     author_email='luopeng.he@gmail.com',
     maintainer='RussellLuo',
