@@ -9,6 +9,24 @@ from easyconfig import Config
 
 class ConfigTest(unittest.TestCase):
 
+    def test_cant_set_lowercase_key(self):
+        config = Config()
+        config['debug'] = True
+        self.assertFalse('debug' in config)
+
+    def test_can_set_lowercase_attribute(self):
+        config = Config()
+        config.debug = True
+        self.assertTrue(hasattr(config, 'debug'))
+
+    def test_keys_are_attributes(self):
+        config = Config()
+        config.DEBUG = True
+        self.assertEqual(config['DEBUG'], True)
+
+        config['PORT'] = 5000
+        self.assertEqual(config.PORT, 5000)
+
     def test_cant_load_lowercase(self):
         config = Config({'debug': True})
         self.assertFalse('debug' in config)
@@ -16,7 +34,6 @@ class ConfigTest(unittest.TestCase):
 
     def test_can_load_uppercase(self):
         config = Config({'DEBUG': True})
-        self.assertEqual(config['DEBUG'], True)
         self.assertEqual(config.DEBUG, True)
 
     def test_load_from_mapping(self):
