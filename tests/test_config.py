@@ -11,8 +11,8 @@ class ConfigTest(unittest.TestCase):
 
     def test_cant_set_lowercase_key(self):
         config = Config()
-        config['debug'] = True
-        self.assertFalse('debug' in config)
+        with self.assertRaises(ValueError):
+            config['debug'] = True
 
     def test_can_set_lowercase_attribute(self):
         config = Config()
@@ -54,7 +54,7 @@ class ConfigTest(unittest.TestCase):
     def test_load_from_none_object(self):
         config = Config()
         config.from_object(None)
-        uppercase_attrs = filter(lambda attr: attr.isupper(), dir(config))
+        uppercase_attrs = [attr for attr in dir(config) if attr.isupper()]
         self.assertFalse(uppercase_attrs)
 
     def test_load_from_envvar(self):

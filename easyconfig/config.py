@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from six import iteritems
+
 
 class Config(dict):
     """The core configuration class.
@@ -44,14 +46,29 @@ class Config(dict):
         """Override to only allow uppercase `key` to be set."""
         if key.isupper():
             dict.__setitem__(self, key, value)
-        object.__setattr__(self, key, value)
+        else:
+            raise ValueError('Only uppercase keys are allowed')
 
-    # make accessing dict keys like attributes possible
-    __getattr__ = __getitem__
-    __setattr__ = __setitem__
+    def __getattr__(self, name):
+        """Override to treat the string `name` first as a dict key,
+        then as an attribute name if `KeyError` is raised.
+        """
+        try:
+            return self.__getitem__(name)
+        except KeyError:
+            return object.__getattribute__(self, name)
+
+    def __setattr__(self, name, value):
+        """Override to treat the pair `(name, value)` first as a dict item,
+        then as an attribute if `ValueError` is raised.
+        """
+        try:
+            self.__setitem__(name, value)
+        except ValueError:
+            object.__setattr__(self, name, value)
 
     def from_mapping(self, mapping):
-        for key, value in mapping.iteritems():
+        for key, value in iteritems(mapping):
             if key.isupper():
                 self[key] = value
 
