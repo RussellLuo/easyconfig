@@ -9,17 +9,33 @@ from easyconfig import Config
 
 class ConfigTest(unittest.TestCase):
 
-    def test_cant_set_lowercase_key(self):
+    def test_cant_set_lowercase_item(self):
         config = Config()
         with self.assertRaises(ValueError):
             config['debug'] = True
 
-    def test_can_set_lowercase_attribute(self):
+    def test_can_set_uppercase_item(self):
+        config = Config()
+        config['DEBUG'] = True
+        self.assertEqual(config['DEBUG'], True)
+
+    def test_can_set_lowercase_attribute_as_attribute(self):
         config = Config()
         config.debug = True
+        # seems like an attribute
         self.assertTrue(hasattr(config, 'debug'))
+        # actually is an attribute
+        self.assertTrue('debug' in config.__dict__)
 
-    def test_keys_are_attributes(self):
+    def test_cant_set_uppercase_attribute_as_attribute(self):
+        config = Config()
+        config.DEBUG = True
+        # seems like an attribute
+        self.assertTrue(hasattr(config, 'DEBUG'))
+        # actually is not an attribute
+        self.assertFalse('DEBUG' in config.__dict__)
+
+    def test_uppercase_items_are_also_attributes(self):
         config = Config()
         config.DEBUG = True
         self.assertEqual(config['DEBUG'], True)
@@ -34,11 +50,13 @@ class ConfigTest(unittest.TestCase):
 
     def test_can_load_uppercase(self):
         config = Config({'DEBUG': True})
+        self.assertEqual(config['DEBUG'], True)
         self.assertEqual(config.DEBUG, True)
 
     def test_load_from_mapping(self):
         config = Config()
         config.from_mapping({'PORT': 5000})
+        self.assertEqual(config['PORT'], 5000)
         self.assertEqual(config.PORT, 5000)
 
     def test_load_from_object(self):
