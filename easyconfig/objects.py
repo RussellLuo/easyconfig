@@ -3,7 +3,7 @@
 
 import os
 
-from werkzeug.utils import import_string
+from .utils import import_string
 
 
 def str_object(obj_name):
