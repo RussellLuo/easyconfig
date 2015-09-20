@@ -7,7 +7,6 @@ description = 'A simple library for loading configurations easily in Python, ins
 
 install_requires = [
     'six==1.9.0',
-    'Werkzeug>=0.7',
     'PyYAML>=3.10',
 ],
 
