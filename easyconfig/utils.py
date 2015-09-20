@@ -23,7 +23,10 @@ def import_string(import_path):
     try:
         return getattr(module, attr_name)
     except AttributeError:
-        msg = 'Module "%s" does not define a "%s" attribute' % (
-            module_path, attr_name
+        msg = (
+            'No module named "{0}.{1}", nor does a module '
+            'named "{0}" define a "{1}" attribute'.format(
+                module_path, attr_name
+            )
         )
         reraise(ImportError, ImportError(msg), sys.exc_info()[2])
