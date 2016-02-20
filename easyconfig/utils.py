@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+import os
 import sys
 from importlib import import_module
 
@@ -30,3 +33,19 @@ def import_string(import_path):
             )
         )
         reraise(ImportError, ImportError(msg), sys.exc_info()[2])
+
+
+def get_envvar(name, silent=False):
+    """Get the value of the given environment variable."""
+    value = os.environ.get(name)
+    if value is None:
+        if not silent:
+            raise RuntimeError(
+                'The environment variable %r is not set '
+                'and as such configuration could not be '
+                'loaded. Set this variable and make it '
+                'point to a configuration file' % name
+            )
+        else:
+            return ''
+    return value
