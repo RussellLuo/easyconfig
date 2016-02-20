@@ -7,6 +7,11 @@ import unittest
 from easyconfig import Config
 
 
+class AppConfig(object):
+
+    SECRET_KEY = '123***456'
+
+
 class ConfigTest(unittest.TestCase):
 
     def test_cant_set_lowercase_item(self):
@@ -43,30 +48,27 @@ class ConfigTest(unittest.TestCase):
         config['PORT'] = 5000
         self.assertEqual(config.PORT, 5000)
 
-    def test_cant_load_lowercase(self):
+    def test_cant_load_lowercase_keys(self):
         config = Config({'debug': True})
         self.assertFalse('debug' in config)
         self.assertFalse(hasattr(config, 'debug'))
 
-    def test_can_load_uppercase(self):
+    def test_can_load_defaults_from_mapping(self):
         config = Config({'DEBUG': True})
-        self.assertEqual(config['DEBUG'], True)
         self.assertEqual(config.DEBUG, True)
+
+    def test_can_load_defaults_from_object(self):
+        config = Config(AppConfig)
+        self.assertEqual(config.SECRET_KEY, '123***456')
 
     def test_load_from_mapping(self):
         config = Config()
         config.from_mapping({'PORT': 5000})
-        self.assertEqual(config['PORT'], 5000)
         self.assertEqual(config.PORT, 5000)
 
     def test_load_from_object(self):
-        class AppConfig(object):
-            def __init__(self):
-                self.SECRET_KEY = '123***456'
-        app_config = AppConfig()
-
         config = Config()
-        config.from_object(app_config)
+        config.from_object(AppConfig)
         self.assertEqual(config.SECRET_KEY, '123***456')
 
     def test_load_from_none_object(self):
@@ -88,6 +90,15 @@ class ConfigTest(unittest.TestCase):
     def test_load_from_empty_envvar(self):
         config = Config(datasrc=os.environ)
         self.assertFalse(hasattr(config, 'NULL_KEY'))
+
+    def test_load_from_either_mapping_or_object(self):
+        config1 = Config()
+        config1.load({'DEBUG': True})
+        self.assertEqual(config1.DEBUG, True)
+
+        config2 = Config()
+        config2.load(AppConfig)
+        self.assertEqual(config2.SECRET_KEY, '123***456')
 
 
 if __name__ == '__main__':

@@ -9,17 +9,21 @@ class Config(dict):
 
     Example usage:
 
-        # load configurations from a dict (as default)
+        # load default configurations from a dictionary (or an object)
         config = Config({'DEBUG': True})
         assert config['DEBUG'] == True
         assert config.DEBUG == True
 
-        # load/update configurations from a dict
+        # load/update configurations from a dictionary
         config.from_mapping({'PORT': 5000})
+        # or the shortcut
+        config.load({'PORT': 5000})
 
         # load/update configurations from an object
         from yourapplication import default_config
         config.from_object(default_config)
+        # or the shortcut
+        config.load(default_config)
 
         # load configurations from environment variables
         import os
@@ -33,7 +37,7 @@ class Config(dict):
 
     def __init__(self, defaults=None, datasrc=None):
         self._datasrc = datasrc or {}
-        self.from_mapping(defaults or {})
+        self.load(defaults or {})
 
     def __getitem__(self, key):
         """Override to take `self._datasrc` into account."""
@@ -68,11 +72,23 @@ class Config(dict):
             object.__setattr__(self, name, value)
 
     def from_mapping(self, mapping):
+        """Update the values from the given mapping."""
         for key, value in iteritems(mapping):
             if key.isupper():
                 self[key] = value
 
     def from_object(self, obj):
+        """Update the values from the given object.
+
+        Objects are usually either modules or classes.
+        """
         for key in dir(obj):
             if key.isupper():
                 self[key] = getattr(obj, key)
+
+    def load(self, obj):
+        """Update the values from either a mapping or an object."""
+        if isinstance(obj, dict):
+            self.from_mapping(obj)
+        else:
+            self.from_object(obj)
