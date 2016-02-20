@@ -10,6 +10,7 @@ Here you can see the full list of changes between each EasyConfig release.
 - Add a `load` method to the `Config` class
 - Add two keyword arguments to `str_object`
 - Add `is_envvar` keyword argument to `json_mapping` and `yaml_mapping`
+- Update tests to be pytest-style
 
 
 ## Version 0.1.5
