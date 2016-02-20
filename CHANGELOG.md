@@ -3,9 +3,9 @@
 Here you can see the full list of changes between each EasyConfig release.
 
 
-## Version 0.1.6 - Dev
+## Version 0.1.6
 
-(release date to be announced)
+Released on Feb 20th 2016.
 
 - Add a `load` method to the `Config` class
 - Add two keyword arguments to `str_object`
