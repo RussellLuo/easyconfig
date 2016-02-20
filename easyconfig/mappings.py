@@ -1,13 +1,17 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import json
 
 import yaml
 
+from .utils import get_envvar
 
-def load_from_file(load_func, filename, silent=False):
+
+def load_from_file(load_func, filename, silent=False, is_envvar=False):
     """Get a configuration mapping from a file."""
+    if is_envvar:
+        filename = get_envvar(filename, silent=silent)
+
     try:
         with open(filename) as fp:
             obj = load_func(fp)
@@ -25,13 +29,13 @@ def load_from_file(load_func, filename, silent=False):
     return obj
 
 
-def json_mapping(filename, silent=False):
+def json_mapping(filename, silent=False, is_envvar=False):
     """Get a configuration mapping from a JSON file."""
     load_func = lambda fp: json.load(fp)
-    return load_from_file(load_func, filename, silent)
+    return load_from_file(load_func, filename, silent, is_envvar)
 
 
-def yaml_mapping(filename, silent=False):
+def yaml_mapping(filename, silent=False, is_envvar=False):
     """Get a configuration mapping from a YAML file."""
     load_func = lambda fp: yaml.load(fp)
-    return load_from_file(load_func, filename, silent)
+    return load_from_file(load_func, filename, silent, is_envvar)

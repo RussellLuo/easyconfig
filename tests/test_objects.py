@@ -34,11 +34,11 @@ class ObjectsTest(unittest.TestCase):
         os.environ.pop('EASY_CONFIG', None)
         self.assertRaisesRegexp(
             RuntimeError,
-            "The environment variable 'EMPTY_CONFIG' is not set "
+            "The environment variable 'EASY_CONFIG' is not set "
             "and as such configuration could not be "
             "loaded. Set this variable and make it "
             "point to a configuration file",
-            str_object, 'EMPTY_CONFIG', False, True
+            str_object, 'EASY_CONFIG', False, True
         )
 
     def test_nonexistent_str_object_from_envvar_in_silent(self):
