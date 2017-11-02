@@ -6,8 +6,8 @@ from setuptools import setup, find_packages
 description = 'A simple library for loading configurations easily in Python, inspired by `flask.config`.'
 
 install_requires = [
-    'six==1.9.0',
-    'PyYAML>=3.10',
+    'six',
+    'PyYAML',
 ],
 
 setup(
