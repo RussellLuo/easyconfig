@@ -3,6 +3,13 @@
 Here you can see the full list of changes between each EasyConfig release.
 
 
+## Version 0.1.7
+
+Released on Nov 2nd 2017.
+
+- Remove the fixed version of dependencies (i.e. six and PyYAML)
+
+
 ## Version 0.1.6
 
 Released on Feb 20th 2016.
