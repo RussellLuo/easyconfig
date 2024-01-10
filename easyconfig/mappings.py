@@ -37,5 +37,5 @@ def json_mapping(filename, silent=False, is_envvar=False):
 
 def yaml_mapping(filename, silent=False, is_envvar=False):
     """Get a configuration mapping from a YAML file."""
-    load_func = lambda fp: yaml.load(fp)
+    load_func = lambda fp: yaml.safe_load(fp)
     return load_from_file(load_func, filename, silent, is_envvar)
